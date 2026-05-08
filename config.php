@@ -1,7 +1,12 @@
-<?php 
-
-// Database configuration
-$host = "localhost";
+<?php
+$servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "mydiary";
+$database = "mydiary";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $database);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}

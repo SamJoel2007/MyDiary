@@ -1,3 +1,13 @@
+<?php
+$title = $_POST['title'] ?? '';
+$caption = $_POST['caption'] ?? '';
+$description = $_POST['content'] ?? '';
+$cover_image_name = '';
+if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] === 0) {
+    $cover_image_name = basename($_FILES['cover_image']['name']);
+    move_uploaded_file($_FILES['cover_image']['tmp_name'], 'uploads/' . $cover_image_name);
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,9 +44,9 @@ and is wrapped around the whole page content, except for the footer in this exam
           <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Caption" name="caption" required>
           <label for="content"><b>Description</b></label>
           <textarea class="w3-input w3-border w3-margin-bottom" placeholder="Enter Description" name="content" required></textarea>
-          <label>Cover Image</label>
-          <input class="w3-input w3-border w3-margin-bottom" type="file" name="cover_image" accept="image/*">
+
           <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">ADD ENTRY</button>
+          </form>
       </div>
     </div>
   </div>
@@ -49,22 +59,36 @@ and is wrapped around the whole page content, except for the footer in this exam
 <div class="w3-col l8 s12">
   <!-- Blog entry -->
   <div class="w3-card-4 w3-margin w3-white">
-    <img src="/w3images/woods.jpg" alt="Nature" style="width:100%">
     <div class="w3-container">
-      <h3><b>TITLE HEADING</b></h3>
-      <h5>Title description, <span class="w3-opacity">April 7, 2014</span></h5>
+      <h3><b>
+        <?php echo htmlspecialchars($title); ?>
+      </b></h3>
+      <h5><?php echo htmlspecialchars($caption); ?> <span class="w3-opacity">April 7, 2014</span></h5>
     </div>
 
     <div class="w3-container">
-      <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed
-        tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+      <p><?php echo htmlspecialchars($description); ?></p>
+      <br>
+      <form action="manage.php" method="post">
+        <label>Heading</label>
+        <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Heading" name="heading" required>
+        <br>
+        <label>Content</label>
+        <textarea class="w3-input w3-border w3-margin-bottom" placeholder="Type content here..." name="content" rows="20" required></textarea>
+        <br>
+        <input type="hidden" name="action" value="1">
+        <input type="hidden" name="title" value='<?php echo htmlspecialchars($title); ?>'>
+        <input type="hidden" name="caption" value='<?php echo htmlspecialchars($caption); ?>'>
+        <input type="hidden" name="description" value='<?php echo htmlspecialchars($description); ?>'>
+        <input type="hidden" name="cover_image" value='<?php echo htmlspecialchars($cover_image_name); ?>'>
+
+          <p><button type="submit" class="w3-button w3-padding-large w3-white w3-border"><b>SAVE »</b></button></p>
+          </form>
+        
+
       <div class="w3-row">
-        <div class="w3-col m8 s12">
-          <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
-        </div>
-        <div class="w3-col m4 w3-hide-small">
-          <p><span class="w3-padding-large w3-right"><b>Comments  </b> <span class="w3-tag">0</span></span></p>
-        </div>
+
+
       </div>
     </div>
   </div>
@@ -74,16 +98,13 @@ and is wrapped around the whole page content, except for the footer in this exam
   <div class="w3-card-4 w3-margin w3-white">
   <img src="/w3images/bridge.jpg" alt="Norway" style="width:100%">
     <div class="w3-container">
-      <h3><b>BLOG ENTRY</b></h3>
-      <h5>Title description, <span class="w3-opacity">April 2, 2014</span></h5>
+      <h3><b><?php echo htmlspecialchars($title); ?></b></h3>
+      <h5><?php echo htmlspecialchars($caption); ?> <span class="w3-opacity">April 2, 2014</span></h5>
     </div>
     <br>
-            <div class="w3-col m8 s12">
-          <p><button class="w3-button w3-padding-large w3-white w3-border"><b>ADD NEW ENTRY</b></button></p>
-        </div>
+
     <div class="w3-container">
-      <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed
-        tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+      <p><?php echo htmlspecialchars($description); ?></p>
       <div class="w3-row">
         <div class="w3-col m8 s12">
           <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
